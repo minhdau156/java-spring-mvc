@@ -47,10 +47,11 @@ public class UserController {
             return "/admin/user/table-user";
         }
 
-    @RequestMapping("/admin/user/{hoidanit}")
+    @RequestMapping("/admin/user/{id}")
         public String getUserDetailPage(Model model, @PathVariable long id) {
-            System.out.println("check path id " + id);
-            model.addAttribute(\"id", id);
+            User user = this.userService.getUser(id);
+            model.addAttribute("user", user);
+            model.addAttribute("id", id);
             return "/admin/user/show";
         }
 
