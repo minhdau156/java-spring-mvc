@@ -42,10 +42,11 @@
                                             <table class="table table-bordered table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">ID</th>
-                                                        <th scope="col">Email</th>
-                                                        <th scope="col">Full Name</th>
-                                                        <th scope="col">Action</th>
+                                                        <th>ID</th>
+                                                        <th>Email</th>
+                                                        <th>Full Name</th>
+                                                        <th>Role</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -54,6 +55,7 @@
                                                             <th scope="row">${user.id}</th>
                                                             <td>${user.email}</td>
                                                             <td>${user.fullName}</td>
+                                                            <td>${user.role.name}</td>
                                                             <td>
                                                                 <a href="/admin/user/${user.id}"
                                                                     class="btn btn-success">View</a>

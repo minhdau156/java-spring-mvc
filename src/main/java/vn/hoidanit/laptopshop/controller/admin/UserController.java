@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.ServletContext;
+
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.UserRepository;
 import vn.hoidanit.laptopshop.service.UploadService;
@@ -29,21 +31,15 @@ public class UserController {
 
     private final UserService userService;
     private final UploadService uploadService;
-
+    private final PasswordEncoder passwordEncoder;
     
-    public UserController(UserService userService, UploadService uploadService) {
+    public UserController(UserService userService, UploadService uploadService, PasswordEncoder passwordEncoder) {
     this.userService = userService;
     this.uploadService = uploadService;
+    this.passwordEncoder = passwordEncoder;
     }
     
-    @RequestMapping("/")
-    public String getHomePage(Model model) {
-        List<User> arrUser = this.userService.getAllUsersByEmail("1@gmail.com");
-        System.out.println(arrUser);
-        model.addAttribute("eric", "test");
-        model.addAttribute("hoidanit", "from controller with model");
-        return "hello";
-    }
+    
 
     @GetMapping("admin/user/create") //GET
         public String getCreateUserPage(Model model) {
@@ -67,8 +63,14 @@ public class UserController {
         //  private final ServletContext servletContext;
             
             String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+            String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
+            
+            hoidanit.setAvatar(avatar);
+            hoidanit.setPassword(hashPassword);
+            hoidanit.setRole(this.userService.getRoleByName(hoidanit.getRole().getName()));
+            
+            this.userService.handleSaveUser(hoidanit);
 
-            // this.userService.handleSaveUser(hoidanit);
             return "redirect:/admin/user";
         } 
 
