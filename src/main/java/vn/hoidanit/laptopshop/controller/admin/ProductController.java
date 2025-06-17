@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import vn.hoidanit.laptopshop.domain.Product;
-import vn.hoidanit.laptopshop.domain.User;
+
 
 @Controller
 public class ProductController {
