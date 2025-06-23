@@ -43,14 +43,14 @@ public class UserController {
     @GetMapping("admin/user/create") //GET
         public String getCreateUserPage(Model model) {
             model.addAttribute("newUser", new User());
-            return "/admin/user/create";
+            return "admin/user/create";
         }
     
     @RequestMapping("/admin/user")
         public String getUserPage(Model model) {
             List<User> users = this.userService.getAllUsers();
             model.addAttribute("users1", users);
-            return "/admin/user/show";
+            return "admin/user/show";
         }
 
     
@@ -85,7 +85,7 @@ public class UserController {
             User user = this.userService.getUserById(id);
             model.addAttribute("user", user);
             model.addAttribute("id", id);
-            return "/admin/user/detail";
+            return "admin/user/detail";
         }
 
 
@@ -93,7 +93,7 @@ public class UserController {
         public String getUpdateUserPage (Model model, @PathVariable long id) {
             User currentUser = this.userService.getUserById(id);
             model.addAttribute("newUser", currentUser);
-            return "/admin/user/update";
+            return "admin/user/update";
         }
     
     @PostMapping("/admin/user/update") 
@@ -116,7 +116,7 @@ public class UserController {
             // User user = new User();
             // user.setId(id);
             model.addAttribute("newUser", new User());
-            return "/admin/user/delete";
+            return "admin/user/delete";
         }
 
     @PostMapping("/admin/user/delete")
