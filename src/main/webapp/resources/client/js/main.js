@@ -262,6 +262,11 @@
         searchParam.set('page', 1 );
         searchParam.set('sort', sortValue)
 
+        //reset
+        searchParam.delete('factory');
+        searchParam.delete('target');
+        searchParam.delete('price');
+
         if (factoryArr.length > 0) {
             searchParam.set('factory', factoryArr.join(','));
         }
