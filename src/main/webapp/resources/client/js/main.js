@@ -234,5 +234,49 @@
         return formatted;
     }
 
+    //handle filter products
+    $('#btnFilter').click(function(event) {
+        event.preventDefault();
+
+        let factoryArr = [];
+        let targetArr = [];
+        let priceArr = [];
+        //factory filter
+        $("#factoryFilter .form-check-input:checked").each(function() {
+            factoryArr.push($(this).val());
+        })
+        //target filter
+        $("#targetFilter .form-check-input:checked").each(function() {
+            targetArr.push($(this).val());
+        })
+        //price filter
+        $("#priceFilter .form-check-input:checked").each(function() {
+            priceArr.push($(this).val());
+        })
+        //sort order
+        let sortValue = $('input[name="radio-sort"]:checked').val();
+
+        const currentUrl = new URL(window.location.href);
+        const searchParam = currentUrl.searchParams;
+        //Add or update query parameters
+        searchParam.set('page', 1 );
+        searchParam.set('sort', sortValue)
+
+        if (factoryArr.length > 0) {
+            searchParam.set('factory', factoryArr.join(','));
+        }
+
+        if (targetArr.length > 0) {
+            searchParam.set('target', targetArr.join(','));
+        }
+
+        if (priceArr.length > 0) {
+            searchParam.set('price', priceArr.join(','));
+        }
+
+        //Update the URL and reload the page
+        window.location.href = currentUrl.toString();
+    });
+
 })(jQuery);
 

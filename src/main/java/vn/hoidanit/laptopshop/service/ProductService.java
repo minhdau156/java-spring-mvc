@@ -21,6 +21,7 @@ import vn.hoidanit.laptopshop.repository.CartRepository;
 import vn.hoidanit.laptopshop.repository.OrderDetailRepository;
 import vn.hoidanit.laptopshop.repository.OrderRepository;
 import vn.hoidanit.laptopshop.repository.ProductRepository;
+import vn.hoidanit.laptopshop.service.specification.ProductSpecs;
 
 @Service
 public class ProductService {
@@ -44,18 +45,95 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
-    private Specification<Product> nameLike(String name){
-        return (root, query, criteriaBuilder) 
-            -> criteriaBuilder.like(root.get(Product_.NAME), "%"+name+"%");
-    }
+    
 
        
     
 
 
-    public Page<Product> fetchProducts(Pageable pageable, String name) {
-        return this.productRepository.findAll(this.nameLike(name), pageable);
+    public Page<Product> fetchProducts(Pageable pageable) {
+        return this.productRepository.findAll( pageable);
     }
+
+
+    public Page<Product> fetchProductsWithSpec(Pageable pageable, String name) {
+        return this.productRepository.findAll(ProductSpecs.nameLike(name), pageable);
+    }
+    //case 1
+    // public Page<Product> fetchProductsWithSpec(Pageable pageable, double min) {
+    //     return this.productRepository.findAll(ProductSpecs.minPrice(min), pageable);
+    // }
+
+    //case 2
+    // public Page<Product> fetchProductsWithSpec(Pageable pageable, double max) {
+    //     return this.productRepository.findAll(ProductSpecs.maxPrice(max), pageable);
+    // }
+
+    //case 3
+    // public Page<Product> fetchProductsWithSpec(Pageable pageable, String factory) {
+    //     return this.productRepository.findAll(ProductSpecs.matchFactory(factory), pageable);
+    // }
+
+    //case 4
+    // public Page<Product> fetchProductsWithSpec(Pageable pageable, List<String> factory) {
+    //     return this.productRepository.findAll(ProductSpecs.matchListFactory(factory), pageable);
+    // }
+
+    //case 5
+    // public Page<Product> fetchProductsWithSpec(Pageable page, String price) {
+    //     //eg: price 10toi-15-trieu
+    //     if (price.equals("10-toi-15-trieu")) {
+    //         double min = 10000000;
+    //         double max = 15000000;
+    //         return this.productRepository.findAll(ProductSpecs.matchPrice(min, max), page);
+    //     }
+    //     else if (price.equals("15-toi-30-trieu")) {
+    //         double min = 15000000;
+    //         double max = 30000000;
+    //         return this.productRepository.findAll(ProductSpecs.matchPrice(min, max), page);
+    //     }
+    //     else {
+    //         return this.productRepository.findAll(page);
+    //     }
+    // }
+
+    //case 6
+    // public Page<Product> fetchProductsWithSpec(Pageable page, List<String> price) {
+    //     Specification<Product> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
+    //     int count = 0;
+    //     for (String p : price) {
+    //         double min = 0;
+    //         double max = 0;
+            
+    //         switch (p) {
+    //             case "10-toi-15-trieu";
+    //                 min = 10000000;
+    //                 max = 15000000;
+    //                 count++;
+    //                 break;
+    //             case "15-toi-20-trieu";
+    //                 min = 15000000;
+    //                 max = 20000000;
+    //                 count++;
+    //                 break;
+    //             case "20-toi-30-trieu";
+    //                 min = 20000000;
+    //                 max = 30000000;
+    //                 count++;
+    //                 break;
+    //         }
+    //         if (min != 0 && max != 0) {
+    //             Specification<Product> rangeSpec = ProductSpecs.matchMutiplePrice(min, max);
+    //             combinedSpec = combinedSpec.or(rangeSpec);
+    //         }
+
+    //     }
+    //     if (count == 0) {
+    //         return this.productRepository.findAll(page);
+    //     }
+    //     return this.prioductRepository.findAll(combinedSpec, page);
+    // }
+
 
     public void deleteProduct(long id) {
         this.productRepository.deleteById(id);
